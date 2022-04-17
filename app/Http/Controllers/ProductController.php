@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
@@ -14,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        return Product::all() ;
     }
 
     /**
@@ -41,7 +42,8 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required',
         ]);
-        Product::create($request->all());
+        $data = Product::create($request->all());
+        return response()->json($data , 200);
     }
 
     /**
@@ -52,7 +54,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return Product::find($product);
+        return $product;
     }
 
     /**
@@ -76,7 +78,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $product->update($request->all());
-        return new $product;
+        return response()->json($product , 200);
     }
 
     /**
@@ -88,5 +90,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+        return response()->json(null , 204);
     }
 }
